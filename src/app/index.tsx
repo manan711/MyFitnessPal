@@ -1,5 +1,6 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import FoodListItem from '../components/FoodListItem';
+import { useState } from 'react';
 
 const foodItems = [
   {label: "Pizza", cal: 75, brand: "Dominos"},
@@ -7,14 +8,20 @@ const foodItems = [
   {label: "Coffee", cal: 100, brand: "Americano"},
 ]
 export default function App() {
+  const [search, setSearch] = useState('');
+
+  const performSearch = () => {
+    console.warn('Searching for', search);
+
+    setSearch('');
+  }
   return (
     <View style={styles.container}>
-      <FlatList
+      <TextInput value={search} onChangeText={setSearch} placeholder='Search food items' style={styles.input} />
+      { search && <Button title='Search' onPress={performSearch} />}
+        <FlatList
         data={foodItems}
-        renderItem={({ item }) => {
-          console.log('Rendering item:', item);
-          return <FoodListItem item={item} />; // Add return statement
-        }}
+        renderItem={({ item }) => <FoodListItem item={item} />}
         contentContainerStyle={{ gap: 5 }}
       />
     </View>
@@ -26,5 +33,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 10,
+    gap: 10,
   },
+  input: {
+    backgroundColor: '#f2f2f2',
+    padding: 10,
+    borderRadius: 20,
+    marginBottom: 10,
+  }
 });

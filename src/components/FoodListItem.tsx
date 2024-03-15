@@ -5,7 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 const FoodListItem = ({item}) => {
     return (
       <View style={{
-        backgroundColor: 'gainsboro',
+        backgroundColor: '#f6f6f8',
         padding: 10,
         borderRadius: 5,
         flexDirection: 'row',
