@@ -1,5 +1,8 @@
 configurationset:
   - configuration:
+      name: postgresql_config
+      uri: postgresql://ep-young-river-a5dm516d.us-east-2.aws.neon.tech/neondb?user=neondb_owner&password=gEYBcU57wjnO
+  - configuration:
       name: edamam
       app_id: f1c9f64a
       app_key: b1ed980f96208301a98ff66f35bf8da1

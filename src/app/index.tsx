@@ -1,14 +1,38 @@
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native'
+import { View, Text, FlatList, Button, StyleSheet, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router'
-import FoodListItem from '../components/FoodListItem'
+import { gql, useQuery } from '@apollo/client'
+import dayjs from 'dayjs'
+import FoodLogListItem from '../components/FoodLogListItem'
 
-const foodItems = [
-    {food:{label: "Pizza", nutrients:{ENERC_KCAL: 100}, brand: "Dominos"}},
-    {food:{label: "Pizza", nutrients:{ENERC_KCAL: 100}, brand: "Dominos"}}
-  ]
+const query = gql`
+query foodLogsForDate($date: Date!, $user_id: String!) {
+  foodLogsForDate(date: $date, user_id: $user_id) {
+    food_id
+    user_id
+    created_at
+    label
+    kcal
+    id
+  }
+}
+`
 
 const HomeScreen = () => {
+    const user_id = 'Manan'
+    const {data, loading, error} = useQuery(query, {
+        variables: {
+            date: dayjs().format('YYYY-MM-DD'),
+             user_id},
+        });
+
+    if(loading) {
+        return <ActivityIndicator />
+    }
+    if(error) {
+        return <Text>Failed to fetch data</Text>
+    }
+    console.log(data);
   return (
     <View style={styles.container}>
         <View style={styles.headerRow}>
@@ -22,9 +46,9 @@ const HomeScreen = () => {
         </Link>
         </View>
         <FlatList
-        data={foodItems}
+        data={data.foodLogsForDate}
         contentContainerStyle={{ gap: 5 }}
-        renderItem={({ item }) => <FoodListItem item={item} />} />
+        renderItem={({ item }) => <FoodLogListItem item={item} />} />
     </View>
   )
 }
